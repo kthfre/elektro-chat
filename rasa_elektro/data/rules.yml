@@ -1,0 +1,587 @@
+version: "3.1"
+
+rules:
+
+- rule: greet
+  steps:
+  - intent: greet
+  - action: utter_greet_general
+  wait_for_user_input: false
+
+- rule: bot challenge
+  steps:
+  - intent: bot_challenge
+  - action: utter_am_bot
+  wait_for_user_input: false
+
+- rule: goodbye
+  steps:
+  - intent: goodbye
+  - action: utter_goodbye
+  wait_for_user_input: false
+
+- rule: inform theory or compute
+  condition:
+  - slot_was_set:
+    - problem_stage: zero
+  steps:
+  - intent: inform_theory_compute
+  - action: action_theory_or_compute
+  wait_for_user_input: false
+
+- rule: inform problem id when not set already
+  condition:
+  - slot_was_set:
+    - problem_stage: zero
+  steps:
+  - intent: inform_problemid
+  - action: action_confirm_problemid
+  wait_for_user_input: false
+
+- rule: inform problem id when not set already
+  condition:
+  - slot_was_set:
+    - problem_stage: one
+  steps:
+  - intent: inform_problemid
+  - action: action_confirm_problemid
+  wait_for_user_input: false
+
+- rule: inform problem answer during multianswer mapping process / intent- problem_answer
+  condition:
+  - slot_was_set:
+    - problem_stage: two
+  steps:
+  - action: action_ask_multianswer
+  - intent: inform_problem_answer
+  - action: action_handle_multianswer
+  wait_for_user_input: false
+
+- rule: inform problem answer during multianswer mapping process / intent- problem_question
+  condition:
+  - slot_was_set:
+    - problem_stage: two
+  steps:
+  - action: action_ask_multianswer
+  - intent: inform_problem_question
+  - action: action_handle_multianswer
+  wait_for_user_input: false
+
+- rule: inform problem answer during multianswer mapping process / intent- theory_compute
+  condition:
+  - slot_was_set:
+    - problem_stage: two
+  steps:
+  - action: action_ask_multianswer
+  - intent: inform_theory_compute
+  - action: action_handle_multianswer
+  wait_for_user_input: false
+
+- rule: inform problem answer during multianswer mapping process / intent- part_problem
+  condition:
+  - slot_was_set:
+    - problem_stage: two
+  steps:
+  - action: action_ask_multianswer
+  - intent: inform_part_problem
+  - action: action_handle_multianswer
+  wait_for_user_input: false
+
+### POTENTIALLY ^^^MORE^^^ FOR OTHER INTENTS
+
+- rule: from ask to part for advanced problem / inform_part_problem
+  condition:
+  - slot_was_set:
+    - problem_stage: four
+    - problem_difficulty: advanced
+  steps:
+  - action: action_ask
+  - intent: inform_part_problem
+  - action: action_part_advanced
+  wait_for_user_input: false
+
+- rule: from ask to part for advanced problem / inform_problem_answer
+  condition:
+  - slot_was_set:
+    - problem_stage: four
+    - problem_difficulty: advanced
+  steps:
+  - action: action_ask
+  - intent: inform_problem_answer
+  - action: action_part_advanced
+  wait_for_user_input: false
+
+- rule: from ask to stepthrough for advanced problem
+  condition:
+  - slot_was_set:
+    - problem_stage: four
+    - problem_difficulty: advanced
+  steps:
+  - action: action_ask
+  - intent: inform_whole_problem
+  - action: action_stepthrough_advanced
+  wait_for_user_input: false
+
+- rule: from ask to hint for simple problem
+  condition:
+  - slot_was_set:
+    - problem_stage: five
+    - problem_difficulty: simple
+  steps:
+  - action: action_ask
+  - action: action_hint
+  - action: action_ask_enough_help
+  wait_for_user_input: false
+
+- rule: not enough help to knowledge questions
+  condition:
+  - slot_was_set:
+    - problem_stage: six
+    - problem_difficulty: simple
+  steps:
+  - action: action_ask_enough_help
+  - intent: deny
+  - action: action_ask_knowledge
+  wait_for_user_input: false
+
+- rule: not enough help to reading when knowledge questions not available
+  condition:
+  - slot_was_set:
+    - problem_stage: seven
+    - problem_difficulty: simple
+  steps:
+  - action: action_ask_enough_help
+  - intent: deny
+  - action: action_reading
+  wait_for_user_input: false
+
+- rule: enough help to good understand / hint
+  condition:
+  - slot_was_set:
+    - problem_stage: five
+    - problem_difficulty: simple
+  steps:
+  - action: action_ask_enough_help
+  - intent: affirm
+  - action: action_good_understand
+  wait_for_user_input: false
+
+- rule: enough help to good understand / knowledge
+  condition:
+  - slot_was_set:
+    - problem_stage: six
+    - problem_difficulty: simple
+  steps:
+  - action: action_ask_enough_help
+  - intent: affirm
+  - action: action_good_understand
+  wait_for_user_input: false
+
+- rule: enough help to good understand / reading
+  condition:
+  - slot_was_set:
+    - problem_stage: seven
+    - problem_difficulty: simple
+  steps:
+  - action: action_ask_enough_help
+  - intent: affirm
+  - action: action_good_understand
+  wait_for_user_input: false
+
+- rule: enough help to good understand / reading
+  condition:
+  - slot_was_set:
+    - problem_stage: eight
+    - problem_difficulty: simple
+  steps:
+  - action: action_ask_enough_help
+  - intent: affirm
+  - action: action_good_understand
+  wait_for_user_input: false
+
+- rule: not enough help to all know / further resources not available
+  condition:
+  - slot_was_set:
+    - problem_stage: eight
+    - problem_difficulty: simple
+  steps:
+  - action: action_ask_enough_help
+  - intent: deny
+  - action: action_all_know
+  wait_for_user_input: false
+
+- rule: knowledge loop
+  condition:
+  - slot_was_set:
+    - problem_stage: six
+    - problem_difficulty: simple
+  steps:
+  - action: action_ask_knowledge
+  - intent: affirm
+  - action: action_intermediate_knowledge
+  wait_for_user_input: false
+
+- rule: knowledge loop
+  condition:
+  - slot_was_set:
+    - problem_stage: six
+    - problem_difficulty: simple
+  steps:
+  - action: action_intermediate_knowledge
+  - intent: inform_problem_question
+  - action: action_handle_knowledge
+  wait_for_user_input: false
+
+- rule: knowledge loop
+  condition:
+  - slot_was_set:
+    - problem_stage: six
+    - problem_difficulty: simple
+  steps:
+  - action: action_intermediate_knowledge
+  - intent: inform_theory_question
+  - action: action_handle_knowledge
+  wait_for_user_input: false
+
+- rule: knowledge loop
+  condition:
+  - slot_was_set:
+    - problem_stage: six
+    - problem_difficulty: simple
+  steps:
+  - action: action_intermediate_knowledge
+  - intent: inform_part_problem
+  - action: action_handle_knowledge
+  wait_for_user_input: false
+
+- rule: knowledge loop
+  condition:
+  - slot_was_set:
+    - problem_stage: six
+    - problem_difficulty: simple
+  steps:
+  - action: action_intermediate_knowledge
+  - intent: inform_problem_answer
+  - action: action_handle_knowledge
+  wait_for_user_input: false
+
+- rule: knowledge loop
+  condition:
+  - slot_was_set:
+    - problem_stage: six
+    - problem_difficulty: simple
+  steps:
+  - action: action_intermediate_knowledge
+  - intent: inform_theory_compute
+  - action: action_handle_knowledge
+  wait_for_user_input: false
+
+- rule: knowledge loop dont want to ask question
+  condition:
+  - slot_was_set:
+    - problem_stage: six
+    - problem_difficulty: simple
+  steps:
+  - action: action_ask_knowledge
+  - intent: deny
+  - action: action_intermediate_knowledge
+  - action: action_ask_enough_help
+  wait_for_user_input: false
+
+- rule: from part to hint for advanced problem
+  condition:
+  - slot_was_set:
+    - problem_stage: five
+    - problem_difficulty: advanced
+  steps:
+  - action: action_part_advanced
+  - action: action_hint
+  - action: action_ask_enough_help
+  wait_for_user_input: false
+
+- rule: not enough help to knowledge questions
+  condition:
+  - slot_was_set:
+    - problem_stage: six
+    - problem_difficulty: advanced
+  steps:
+  - action: action_ask_enough_help
+  - intent: deny
+  - action: action_ask_knowledge
+  wait_for_user_input: false
+
+- rule: not enough help to reading when knowledge questions not available
+  condition:
+  - slot_was_set:
+    - problem_stage: seven
+    - problem_difficulty: advanced
+  steps:
+  - action: action_ask_enough_help
+  - intent: deny
+  - action: action_reading
+  wait_for_user_input: false
+
+- rule: enough help to good understand / hint
+  condition:
+  - slot_was_set:
+    - problem_stage: five
+    - problem_difficulty: advanced
+  steps:
+  - action: action_ask_enough_help
+  - intent: affirm
+  - action: action_good_understand
+  wait_for_user_input: false
+
+- rule: enough help to good understand / knowledge
+  condition:
+  - slot_was_set:
+    - problem_stage: six
+    - problem_difficulty: advanced
+  steps:
+  - action: action_ask_enough_help
+  - intent: affirm
+  - action: action_good_understand
+  wait_for_user_input: false
+
+- rule: enough help to good understand / reading
+  condition:
+  - slot_was_set:
+    - problem_stage: seven
+    - problem_difficulty: advanced
+  steps:
+  - action: action_ask_enough_help
+  - intent: affirm
+  - action: action_good_understand
+  wait_for_user_input: false
+
+- rule: reading to enough help / reading
+  condition:
+  - slot_was_set:
+    - problem_stage: eight
+    - problem_difficulty: advanced
+  steps:
+  - action: action_reading
+  - action: action_ask_enough_help
+  wait_for_user_input: false
+
+- rule: enough help to good understand / reading
+  condition:
+  - slot_was_set:
+    - problem_stage: eight
+    - problem_difficulty: advanced
+  steps:
+  - action: action_ask_enough_help
+  - intent: affirm
+  - action: action_good_understand
+  wait_for_user_input: false
+
+- rule: not enough help to all know / further resources not available
+  condition:
+  - slot_was_set:
+    - problem_stage: eight
+    - problem_difficulty: advanced
+  steps:
+  - action: action_ask_enough_help
+  - intent: deny
+  - action: action_all_know
+  wait_for_user_input: false
+
+- rule: knowledge loop
+  condition:
+  - slot_was_set:
+    - problem_stage: six
+    - problem_difficulty: advanced
+  steps:
+  - action: action_ask_knowledge
+  - intent: affirm
+  - action: action_intermediate_knowledge
+  wait_for_user_input: false
+
+- rule: knowledge loop
+  condition:
+  - slot_was_set:
+    - problem_stage: six
+    - problem_difficulty: advanced
+  steps:
+  - action: action_intermediate_knowledge
+  - intent: inform_problem_question
+  - action: action_handle_knowledge
+  wait_for_user_input: false
+
+- rule: knowledge loop
+  condition:
+  - slot_was_set:
+    - problem_stage: six
+    - problem_difficulty: advanced
+  steps:
+  - action: action_intermediate_knowledge
+  - intent: inform_theory_question
+  - action: action_handle_knowledge
+  wait_for_user_input: false
+
+- rule: knowledge loop
+  condition:
+  - slot_was_set:
+    - problem_stage: six
+    - problem_difficulty: advanced
+  steps:
+  - action: action_intermediate_knowledge
+  - intent: inform_part_problem
+  - action: action_handle_knowledge
+  wait_for_user_input: false
+
+- rule: knowledge loop
+  condition:
+  - slot_was_set:
+    - problem_stage: six
+    - problem_difficulty: advanced
+  steps:
+  - action: action_intermediate_knowledge
+  - intent: inform_problem_answer
+  - action: action_handle_knowledge
+  wait_for_user_input: false
+
+- rule: knowledge loop
+  condition:
+  - slot_was_set:
+    - problem_stage: six
+    - problem_difficulty: advanced
+  steps:
+  - action: action_intermediate_knowledge
+  - intent: inform_theory_compute
+  - action: action_handle_knowledge
+  wait_for_user_input: false
+
+- rule: knowledge loop dont want to ask question
+  condition:
+  - slot_was_set:
+    - problem_stage: six
+    - problem_difficulty: advanced
+  steps:
+  - action: action_ask_knowledge
+  - intent: deny
+  - action: action_intermediate_knowledge
+  - action: action_ask_enough_help
+  wait_for_user_input: false
+
+- rule: knowledge loop dont want to ask question
+  condition:
+  - slot_was_set:
+    - problem_stage: eleven
+  steps:
+  - action: action_conclude_advanced
+  - action: utter_goodbye
+  wait_for_user_input: true
+
+- rule: knowledge loop dont want to ask question
+  condition:
+  - slot_was_set:
+    - problem_stage: eleven
+  steps:
+  - action: action_good_understand
+  - action: utter_goodbye
+  wait_for_user_input: true
+
+- rule: knowledge loop dont want to ask question
+  condition:
+  - slot_was_set:
+    - problem_stage: eleven
+  steps:
+  - action: action_all_know
+  - action: utter_goodbye
+  wait_for_user_input: true
+
+- rule: theory inform module for theory
+  condition:
+  - slot_was_set:
+    - problem_stage: zero
+  steps:
+  - intent: inform_module
+  - action: action_confirm_theory_subject
+  wait_for_user_input: false
+
+- rule: theory inform module for theory
+  condition:
+  - slot_was_set:
+    - problem_stage: twenty
+  steps:
+  - intent: inform_module
+  - action: action_confirm_theory_subject
+  - action: action_listen
+  wait_for_user_input: false
+
+- rule: theory handle front end spinner control
+  condition:
+  - slot_was_set:
+    - theory_trigger_control: true
+  steps:
+  - action: action_handle_theory
+  - action: action_listen
+  wait_for_user_input: false
+
+- rule: theory inform question to be search for / inform_theory_question
+  condition:
+  - slot_was_set:
+    - problem_stage: twentyone
+  steps:
+  - intent: inform_theory_question
+  - action: action_handle_theory
+  wait_for_user_input: false
+
+- rule: theory inform question to be search for / inform_problem_question
+  condition:
+  - slot_was_set:
+    - problem_stage: twentyone
+  steps:
+  - intent: inform_problem_question
+  - action: action_handle_theory
+  wait_for_user_input: false
+
+- rule: theory handle question no more questions bye
+  condition:
+  - slot_was_set:
+    - problem_stage: twentyone
+  steps:
+  - action: action_handle_theory
+  - intent: deny
+  - action: action_conclude_theory
+  - action: utter_goodbye
+  wait_for_user_input: false
+
+- rule: theory handle question no more questions bye
+  condition:
+  - slot_was_set:
+    - problem_stage: eleven
+  steps:
+  - action: action_conclude_theory
+  - action: utter_goodbye
+  wait_for_user_input: false
+
+- rule: theory handle question more questions reiterate
+  condition:
+  - slot_was_set:
+    - problem_stage: twentyone
+  steps:
+  - action: action_handle_theory
+  - intent: affirm
+  - action: action_confirm_theory_subject
+  wait_for_user_input: false
+
+- rule: session done
+  condition:
+  - slot_was_set:
+    - problem_stage: eleven
+  steps:
+  - or:
+    - intent: deny
+    - intent: affirm
+    - intent: inform_problem_answer
+    - intent: inform_theory_compute
+    - intent: inform_theory_question
+    - intent: inform_module
+    - intent: inform_part_problem
+    - intent: inform_whole_problem
+    - intent: inform_problem_question
+    - intent: inform_problemid
+  - action: utter_session_done
+  wait_for_user_input: false

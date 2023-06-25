@@ -1,0 +1,194 @@
+version: "3.1"
+
+nlu:
+- intent: greet
+  examples: |
+    - hej
+    - hallå
+    - hello
+    - tja
+    - tjena
+    - mors
+    - hi
+    - god morgon
+    - morrn
+    - morn
+    - god dag
+    - goddag
+
+- intent: goodbye
+  examples: |
+    - hej då
+    - hejdå
+    - vi ses
+    - bye
+    - hej svejs
+
+- intent: affirm
+  examples: |
+    - yes
+    - y
+    - japp
+    - ja
+    - jo
+    - absolut
+    - helt klart
+    - yup
+    - yep
+    - ye
+    - jovisst
+
+- intent: deny
+  examples: |
+    - no
+    - n
+    - nej
+    - nope
+    - nejdå
+    - icke
+    - nepp
+    - knappast
+
+- intent: inform_problemid
+  examples: |
+    - [11111111](problem_id)
+    - [12344321](problem_id)
+    - problem id är [42365421](problem_id)
+    - idet är [3214800](problem_id)
+    - id nummer [12340800](problem_id)
+    - [23Ovn1A1](problem_id)
+
+- intent: inform_problem_answer
+  examples: |
+    - [öppen](problem_answer)
+    - [sluten](problem_answer)
+    - [inte öppen](problem_answer)
+    - [inte sluten](problem_answer)
+    - [ej öppen](problem_answer)
+    - [ej sluten](problem_answer)
+    - kretsen är [öppen](problem_answer)
+    - [sluten](problem_answer) krets
+    - [230](problem_answer)
+    - spänningen är [12v](problem_answer)
+    - [12V](problem_answer) spänning
+    - [24](problem_answer) volt
+    - [en](problem_answer) glödlampa
+    - det finns [två](problem_answer) lampor
+    - [1](problem_answer) lampa
+    - [2](problem_answer) lampor
+    - den är [inte öppen](problem_answer)
+    - [strömmen](problem_answer)
+    - [spänningen](problem_answer)
+    - [a](problem_answer) uppgiften
+    - uppgift [b](problem_answer)
+    - del problem [c](problem_answer)
+    - [d](problem_answer) problemet
+    - delproblem [e](problem_answer)
+    - deluppgift [f](problem_answer)
+    - [a](problem_answer)
+    - [C](problem_answer)
+    - [D](problem_answer) uppgift
+    - de är [lika](problem_answer)
+    - värdena är [olika](problem_answer)
+    - [hitta mönster](problem_answer)
+    - man ska [hitta en generalisering](problem_answer)
+    - [generalisera](problem_answer)
+    - [mönster](problem_answer)
+    - [värme](problem_answer)
+    - [effekt]((problem_answer))
+    - [energi](problem_answer)
+
+- intent: inform_whole_problem
+  examples: |
+    - hela problemet
+    - allt av problemet
+    - hela skiten
+    - jag vill ha hjälp med problemet från början
+    - från början till slutet
+    - ALLT!
+    - Hela
+    - fattar ingenting
+
+- intent: inform_part_problem
+  examples: |
+    - en del av problemet
+    - delen som gäller [spänning](problem_part)
+    - jag förstår inte hur jag räknar ut [resistansen](problem_part)
+    - hur får jag fram [spänningen](problem_part)
+    - [spänningsdelen](problem_part)
+    - [ohms lag](problem_part)
+    - bara slutet
+    - den sista biten
+    - andra halvan
+    - hur börjar jag
+    - klurar på hur jag fortsätter när jag har fått fram resistansen
+    - har fått fram spänningen men förstår inte hur jag går vidare sen
+
+- intent: inform_problem_question
+  examples: |
+    - jag undrar om hur resistans kopplas till bollar?
+    - jag funderar kring om jorden är rund?
+    - är resistans och spänning samma sak?
+    - funderingar kring samband mellan resistans och ohms lag
+    - undrar om det är högre spänning i andra länder än i sverige
+    - hur hög spänning har man i tyskland?
+    - Vad är spänningen i Finland?
+    - jag vill veta om du vet hur hög resistansen maximalt kan vara i en avancerad krets?
+    - undrar om hög resistans är bra eller dåligt?
+    - vad är resistans?
+    - hur vet man om resistansen är för hög för att drivas av förstärkaren?
+    - känner du till Ohm?
+    - Är den där Ohm en viktig person?
+    - vet du vem georg ohm är?
+    - känner du till hur man beräknar resistansersättning?
+    - hur beräknas resistansersättning?
+    - kan man beräkna resistansersättning på nåt vis
+    - vad är formeln
+    - kan man få formeln
+    - hur ser formel ut
+
+
+- intent: inform_theory_compute
+  examples: |
+    - teori
+    - räkna
+    - beräkna
+    - teor
+    - läsning
+    - material
+    - jag vill ha hjälp med teori
+    - jag vill ha hjälp med att räkna
+    - beräkningsuppgift
+    - uppgift
+    - möbius
+    - fråga
+    - boken
+    - läsa
+
+- intent: inform_module
+  examples: |
+    - modulen som gäller [likström](module)
+    - [likström](module)
+    - [digitalteknik](module)
+    - [reglerteknik](module)
+    - området [likström](module)
+    - ämnet [digitalteknik](module)
+    - inom [digitaltekniken](module)
+
+- intent: inform_theory_question
+  examples: |
+    - kan du berätta mer om styrenheter
+    - hur fungerar styrenheter?
+    - jag har funderingar kring mätvärden
+    - var kan jag läsa mer om de elementära kretsarna?
+    - jag vill ha information om de elementära kretsarna
+    - vad är en transmissionsfunktion?
+    - jag förstår inte transmissionsfunktion
+
+- intent: bot_challenge
+  examples: |
+    - är du en bot?
+    - är du en människa?
+    - botjävel
+    - är du bot eller människa?
+    - är du en riktig person?

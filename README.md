@@ -1,8 +1,12 @@
-# Installation
+# ElektroCHAT - installation
 
 This readme will cover installation from the scratch, step by step. During development python 3.10 was used. Python 3.11 was not supported. Some steps for installing certain software may vary for different operating systems. The server that is being used in this example installation is running Debian 11. 
 
-At first the different main software used will be installed and configured, followed by frameworks and packages.
+Since some of the different components (i.e., client/server) of the project have quite strong interdependencies, all five of them share this repository at the time being.
+
+To begin the different main software used will be installed and configured, followed by frameworks and packages.
+
+## Software
 
 ### Python
 
@@ -21,9 +25,9 @@ sudo make altinstall
 
 The installation can be verified by
 
-``
+```
 python3.10 --version
-``
+```
 
 ### Node.js
 
@@ -51,21 +55,21 @@ sudo apt-get update
 
 At the time of this writing the latest version is 5.8.0.
 
-``
+```
 apt list -a neo4j
-``
+```
 
 Which is installed (you may want to go community edition here).
 
-``
+```
 sudo apt-get install neo4j-enterprise=1:5.8.0
-``
+```
 
 To update the configuration, open the configuration file with any editor of your liking.
 
-``
+```
 sudo nano /etc/neo4j/neo4j.conf
-``
+```
 
 Add/uncomment/modify the following lines:
 
@@ -100,28 +104,28 @@ dbms.ssl.policy.https.client_auth=NONE
 
 You would want to get a certificate from a certificate authority but the shortcut of self-signed certificates will be taken here. To generate the certificate and private key proceed through the process
 
-``
+```
 openssl req -newkey rsa:2048 -nodes -keyout private.key -x509 -days 180 -out public.crt
-``
+```
 
 Now create the following folders
 
-``
+```
 sudo mkdir /var/lib/neo4j/certificates/bolt
 sudo mkdir /var/lib/neo4j/certificates/bolt/trusted
 sudo mkdir /var/lib/neo4j/certificates/bolt/revoked
 sudo mkdir /var/lib/neo4j/certificates/https
 sudo mkdir /var/lib/neo4j/certificates/https/trusted
 sudo mkdir /var/lib/neo4j/certificates/https/revoked
-``
+```
 
 Now lets install the required Neo4j plugins.
 
 Some database queries of ElektroCHAT relies on APOC calls. If the plugin is bundled with the installation and located in the labs folder, then simply move it from there to the plugins folder (version number may naturally differ).
 
-``
+```
 sudo mv /var/lib/neo4j/labs/apoc-5.8.0-core.jar /var/lib/neo4j/plugins/
-``
+```
 
 Otherwise, visit https://neo4j.com/labs/apoc/5/installation/ and fetch the appropriate jar.
 
@@ -136,15 +140,15 @@ https://search.maven.org/artifact/io.netty/netty-tcnative-classes/2.0.52.Final/j
 
 Move the appropriate jar files to
 
-``
+```
 /var/lib/neo4j/plugins/
-``
+```
 
 Check whether Neo4j is running
 
-``
+```
 neo4j-admin server status
-``
+```
 
 If it is, restart it with `sudo neo4j-admin server restart`, otherwise start it with `sudo neo4j-admin server start`.
 
@@ -182,7 +186,7 @@ sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public
 sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON ALL FUNCTIONS IN SCHEMA public to username" -d elektrouser
 ```
 
-There is no registration page or similar, instead the users must be inserted manually. To help with this there is a script in the github repository called insert.js. Modify the usersnames and password variables according to your needs. Also modify the client variable to match the configuration you just did with regards to user and database name.
+There is no registration page or similar, instead the users must be inserted manually. To help with this there is a script in the github repository called insert.js. Modify the usernames and password variables according to your needs. Also modify the client variable to match the configuration you just did with regards to user and database name.
 
 ```
 usernames = ["user1", "user2", "user3"];
@@ -195,9 +199,9 @@ Then simply run `node insert.js`.
 
 Prior to creating the venv and installing Rasa, to fulfill the requirements of Rasa, a Rust compiler is installed. Rasa's official documentation can be found here https://rasa.com/docs/rasa/installation/installing-rasa-open-source.
 
-``
+```
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-``
+```
 
 Follow through with the installation when prompted.
 
@@ -212,9 +216,9 @@ source bin/activate
 
 Rasa as well as the additional dependencies of ElektroCHAT need now be installed. First install the python packages by using the `requirements.txt` of the github repository
 
-``
+```
 pip install -r requirements.txt
-``
+```
 
 Newer versions of Rasa and the Rasa SDK may be compatible, but as with all other software, use at own risk.
 
@@ -229,9 +233,10 @@ rasa init
 Go through the installation process any way you like. Here the current directory was used, and answered no to training models as that will be done at a later stage.
 
 
-Using the corresponding files from the git repository, replace (or create) the following files:
+From the `rasa_elektro` directory of the git repository, replace (or create) the following files:
 
 ```
+callback_server.py
 config.yml
 credentials.yml
 domain.yml
@@ -273,7 +278,7 @@ gzip -dk cc.sv.300.bin.gz
 mv model.bin word2vec.sv.100.conll17.bin
 ```
 
-At the top of the `actions/util.py` file you can control which models are loaded and used in the semantic similarity matching by simply changing the first value of each of the model tuples of the `enabled_models` variable. Setting them to True naturally means to load the model, and False to exclude it. You must also update the base_models_folder with the absolute path to the models folder in your rasa project including the succeedings "/" (i.e. "/home/user/rasa_project/models/"). It is recommended to have at least have one of the distributional models and Sentence-BERT. The fastText embeddings are the most demanding from a hardware perspective and may cause issues with systems with less ram.
+At the top of the `actions/util.py` file you can control which models are loaded and used in the semantic similarity matching by simply changing the first value of each of the model tuples of the `enabled_models` variable. Setting them to True naturally means to load the model, and False to exclude it. You must also update the `base_models_folder` with the absolute path to the models folder in your rasa project including the succeeding "/" (i.e. `"/home/user/rasa_project/models/"`). It is recommended to have at least have one of the distributional models and Sentence-BERT. The fastText embeddings are the most demanding from a hardware perspective and may cause issues with systems with less ram.
 
 If needed, update the database details of Neo4j in the constructor of the GraphDBHandler class at the top of the file `actions/graph_db.py`.
 
@@ -281,21 +286,23 @@ If needed, update the database details of Neo4j in the constructor of the GraphD
 
 Fetch the files from the github repository and run
 
-``
+```
 npm install
-``
+```
 
 If needed, modify the Neo4j database details of the `driver` variable at the top of the `index.js` file.
 
-You may also configure the `port` and `portHttps` variables according to preferences, and make sure to configure any firewall accordingly.
+For the knowledge base server there is a chunk of code left commented out under "circumvent userdb" for development environments without user database setup, if preferable.
+
+You may also configure the `port` and `portHttps` variables according to preferences, and make sure to configure any firewall accordingly. You may also need to comment/uncomment a few lines depending on preferred configuration. Search for the `app.listen`, `http.createServer`, and `https.createServer` and comment/uncomment according to preferences and configured ports.
 
 According to preference either generate a new private key and public certificate or reuse the ones since before. Update the variable options close to the top of the index.js file with the respective paths.
 
 The server may then be launched by simply running
 
-``
+```
 node index.js
-``
+```
 
 The above applies to both the dialogue system server and knowledge base server. Additionally for the knowledge base server, update the values of the `client` variable in the `verifyUser` function of the `index.js` file, according to the PostgreSQL configuration you previously set.
 
@@ -335,21 +342,21 @@ Python 3.11 is not compatible, and that is presumably the case with future relea
 
 Start the Rasa actions server
 
-``
+```
 rasa run actions
-``
+```
 
 Start the Rasa dialogue manager
 
-``
+```
 rasa run --enable-api --cors="*"
-``
+```
 
 Start the dialogue system node server, if you have not done so already
 
-``
+```
 node index.js
-``
+```
 
 The system is now accessible on whatever port you configured.
 
@@ -359,17 +366,16 @@ The system is now accessible on whatever port you configured.
 
 Start the knowledge base system node server, if you have not done so already
 
-``
+```
 node index.js
-``
+```
 
-The system is now accessible on whatever port you configured (NOTE: it may).
+The system is now accessible on whatever port you configured.
 
-**NOTE:** course modules must be created manually prior to adding any content in the form of problems or theory texts. There are many ways to work with the graph (neo4j-desktop, cypher-shell etc.). Then simply add modules with their name and number, like so:
+**NOTE:** course modules must be created manually prior to adding any content in the form of problems or theory texts. There are many ways to work with the graph (neo4j-desktop, cypher-shell, etc.). Then simply add modules with their name and number, like so:
 
 ```
 CREATE (:Module {name: "module_name", number: module_number})
 ```
 
 The module will then be available in the drop down list in the knowledge base client during content creation.
-

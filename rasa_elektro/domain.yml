@@ -1,0 +1,535 @@
+version: "3.1"
+
+intents:
+  - greet
+  - goodbye
+  - affirm
+  - deny
+  - bot_challenge
+  - inform_problemid
+  - inform_problem_answer
+  - inform_whole_problem
+  - inform_part_problem
+  - inform_problem_question
+  - inform_theory_compute
+  - inform_module
+  - inform_theory_question
+
+slots:
+  problem_type:
+    type: categorical
+    influence_conversation: true
+    values:
+      - single
+      - multi
+    mappings:
+    - type: custom
+  problem_difficulty:
+    type: categorical
+    influence_conversation: true
+    values:
+      - simple
+      - advanced
+    mappings:
+    - type: custom
+  maps_to:
+    type: categorical
+    influence_conversation: true
+    values:
+      - completed
+    mappings:
+    - type: custom
+  problem_part:
+    type: categorical
+    influence_conversation: true
+    values:
+      - completed
+    mappings:
+    - type: custom
+  problem_advanced:
+    type: categorical
+    influence_conversation: true
+    values:
+      - part
+      - whole
+    mappings:
+    - type: custom
+  problem_multistep:
+    type: categorical
+    influence_conversation: true
+    values:
+      - yy
+      - nn
+    mappings:
+    - type: custom
+  problem_multistep_mapped:
+    type: categorical
+    influence_conversation: true
+    values:
+      - yy
+      - nn
+    mappings:
+    - type: custom
+  problem_provided:
+    type: categorical
+    influence_conversation: true
+    values:
+      - hint
+      - reading
+    mappings:
+    - type: custom
+  problem_reading:
+    type: bool
+    influence_conversation: true
+    mappings:
+    - type: custom
+  problem_final_step:
+    type: bool
+    initial_value: false
+    influence_conversation: true
+    mappings:
+    - type: custom
+  problem_id:
+    type: text
+    initial_value: ""
+    influence_conversation: true
+    mappings:
+    - type: from_entity
+      entity: problem_id
+  problem_stage:
+    type: categorical
+    values:
+      - zero
+      - one
+      - two
+      - three
+      - four
+      - five
+      - six
+      - seven
+      - eight
+      - nine
+      - ten
+      - eleven
+      - twenty
+      - twentyone
+    initial_value: zero
+    influence_conversation: true
+    mappings:
+    - type: custom
+  module:
+    type: text
+    influence_conversation: false
+    mappings:
+    - type: from_entity
+      entity: module
+  problem_answer:
+    type: text
+    influence_conversation: true
+    mappings:
+    - type: from_entity
+      entity: problem_answer
+  problem_step:
+    type: text
+    influence_conversation: true
+    mappings:
+    - type: from_entity
+      entity: problem_step
+  problem_knowledge:
+    type: bool
+    initial_value: false
+    influence_conversation: true
+    mappings:
+    - type: custom
+  problem_knowledge_first:
+    type: bool
+    initial_value: true
+    influence_conversation: true
+    mappings:
+    - type: custom
+  problem_knowledge_question:
+    type: text
+    initial_value: ""
+    mappings:
+    - type: custom
+  problem_knowledge_loop:
+    type: bool
+    initial_value: false
+    influence_conversation: true
+    mappings:
+    - type: custom
+  problem_stepthrough_first:
+    type: bool
+    initial_value: true
+    influence_conversation: false
+    mappings:
+    - type: custom 
+  theory_search_eta:
+    type: text
+    influence_conversation: false
+    mappings:
+    - type: custom
+  theory_trigger_control:
+    type: bool
+    initial_value: false
+    influence_conversation: true
+    mappings:
+    - type: custom
+
+entities:
+  - problem_id
+  - problem_answer
+  - problem_step
+  - problem_part
+  - module
+
+responses:
+  utter_custom_problemid:
+  - custom:
+      text: "N/A"
+      problem_id: "{problem_id}"
+
+  utter_custom_multianswer:
+  - custom:
+      text: "N/A"
+      maps_to: "{maps_to}"
+
+  utter_custom_section:
+  - custom:
+      text: "N/A"
+      section: "{section}"
+
+  utter_custom_problemadvanced:
+  - custom:
+      text: "N/A"
+      problem_advanced: "{problem_advanced}"
+      part: "{part}"
+      step_num: "{step_num}"
+      total_steps: "{total_steps}"
+      topics: "{topics}"
+
+  utter_custom_theorysearch:
+  - custom:
+      text: "N/A"
+      eta: "{eta}"
+
+  utter_greet_general:
+  - text: "Hej! Hoppas allt är väl med dig!"
+  - text: "Tjena! Vad kul att se dig!"
+  - text: "Hejsan! Trevligt att du är här."
+
+  utter_greet:
+  - text: "Hej! Vill du ha hjälp med en teorifråga eller en beräkningsuppgift?"
+  - text: "God dag! Vill du ha assistans med teori eller en beräkningsuppgift?"
+  - text: "Vad kul att se dig! Vill du ha hjälp med generell teori eller en uppgift?"
+
+  utter_theory_confirm:
+  - text: "Du vill alltså ha hjälp med teori."
+  - text: "Det låter som att du är ute efter assistans med teoretiskt material."
+  - text: "Om jag förstår dig rätt vill du att jag ska gå igenom lite teori med dig."
+
+  utter_theory_know_none:
+  - text: "Dessvärre läser jag ingen teori för närvarande. Du får besvära kursansvariga att lära mig!"
+  - text: "Teoritexter lyser med sin frånvaro i min kunskapsbank. Klaga till kursansvariga att göra mig mer bildad!"
+  - text: "Jag känner tyvärr inte till någon teori alls, men kan lära mig om du förmedlar detta till kursansvariga."
+
+  utter_theory_subjects:
+  - text: "Jag hanterar för närvarande endast följande områden: {subject}."
+  - text: "De enda ämnen som jag gör mig besvär att läsa för närvarande är: {subject}."
+  - text: "För närvarande har jag endast åtkomst till områdena: {subject}."
+
+  utter_theory_only_subject:
+  - text: "I och med att jag bara läser {subject} för närvarande går vi direkt vidare till frågeställningen."
+  - text: "Eftersom mitt enda teoretiska material involverar {subject} går vi direkt vidare till frågeställningen."
+  - text: "Med bara {subject} tillgängligt går vi direkt vidare till frågeställningen."
+
+  utter_ask_theory_subject:
+  - text: "Vilket av dessa {num_subjects} områden gäller din förfrågan?"
+  - text: "Av dessa {num_subjects} områden, vilket behöver du hjälp med?"
+  - text: "Vilken av de {num_subjects} listade modulerna berör din förfrågan?"
+
+  utter_theory_module_confirm:
+  - text: "Jag förstår det som att din frågeställning relaterar till {module}."
+  - text: "Det låter som att du vill fråga om {module}."
+  - text: "Min uppfattning är att dina frågor berör {module}."
+
+  utter_theory_module_dont_understand:
+  - text: "Dessvärre förstod jag inte vilken modul du vill fråga kring, eller så hanterar jag inte den modulen, prova igen."
+  - text: "Antingen saknar jag läsmaterial angående efterfrågad modul eller så förstår jag inte vilken modul du vill ha hjälp med, försök igen."
+  - text: "Den modul du efterfrågar finns inte eller så uppfattar jag dig fel, vänligen försök igen."
+
+  utter_theory_module_num_texts:
+  - text: "Jag kommer nu läsa igenom de {num_texts} texter jag har om denna modul och presentera det bäst passande stycket."
+  - text: "Var god dröj medan jag läser igenom mina {num_texts} texter för att efter det presentera det stycke jag anser mest lämpat."
+  - text: "Nu ögnar jag igenom mina {num_texts} texter och presenterar sedan den mest lämpade delen."
+
+  utter_theory_reading_takes_time:
+  - text: "Notera att trots att jag är en smart maskin så tar analys av texter en viss tid, i detta fall uppskattar jag att du får vänta ca {duration} sekunder."
+  - text: "Att analysera texter kräver ett visst arbete från min sida, jag beräknar att det i detta fallet kommer ta ca {duration} sekunder."
+  - text: "Att förstå betydelsen av dessa texter kräver ett visst fokus som du naturligtvis redan har upplevt, i datta fall beräknar jag att det tar mig ca {duration} sekunder."
+
+  utter_theory_here_is_text:
+  - text: "Nedan följer utdraget från texten {text_name}."
+  - text: "Jag skriver ut mitt utdrag nedan, vill du läsa mer kan du göra det i {text_name}."
+  - text: "Efter att ha gått igenom mina texter är jag av uppfattningen att det nedan är det mest intressanta för dig, texten i sin helhet återfinns i {text_name}."
+
+  utter_theory_text:
+  - text: "{text}"
+
+  utter_hope_question_session_useful:
+  - text: "Vi sammanfattar nu chatsessionen, hoppas frågestunden var användbar!"
+  - text: "Vi har nu kommit till vägs ände för denna gång, hoppas du fick hjälp av mina svar!"
+  - text: "Det är nu dags att runda av, hoppas extraheringen från mina texter var användbar och läs nu vidare på egen hand!"
+
+  utter_problem_confirm:
+  - text: "Det låter som att du vill ha räknehjälp med ett problem."
+  - text: "Det låter som att du har funderingar kring en uppgift."
+  - text: "Om jag förstår dig rätt vill du ha hjälp med en räkneuppgift."
+
+  utter_problem_ask_id:
+  - text: "Var god ange ID för problemet i fråga."
+  - text: "Vad har problemet för ID?"
+  - text: "Mer specifikt, vilket ID har uppgiften du efterfrågar hjälp med?"
+
+  utter_cant_interpret_problemid:
+  - text: "Dessvärre kunde jag inte tyda vilket problem ID du angav, var god försök igen."
+  - text: "Jag kunde tyvärr inte tolka vad du angav som problem ID, försök igen!"
+  - text: "Jag förstod inte vilket ID du angav för problemet, var snäll försök igen."
+
+  utter_problem_recognize:
+  - text: "Jag är välbekant med problem {problem_id} och kommer nu att assistera dig med det."
+  - text: "Vad kul! Problem {problem_id} involverar mina favoritområden."
+  - text: "Uppgift {problem_id} kan vara lite klurig så naturligtvis kan vi kika lite närmare på det tillsammans."
+
+  utter_problem_dont_exist:
+  - text: "Problemet du har angett, med ID {problem_id}, finns dessvärre inte. Det finns inte heller några problem med närliggande ID. Prova gärna igen med ett annat ID."
+  - text: "Problemet som har ID {problem_id} infinner sig tyvärr inte inom ramen för vad jag kan hjälpa till med. Det finns inte heller några problem med liknande ID. Ange gärna ett annat ID du vill ha hjälp med."
+  - text: "Dessvärre känner jag inte till problemet med ID {problem_id} och det finns heller inte några problem med liknande ID. Om du har ett annat ID kan jag se om jag kan hjälp dig med det!"
+
+  utter_problem_dont_exist_spelled_wrong:
+  - text: "Problemet du har angett, med ID {problem_id}, finns dessvärre inte. Har du stavat fel? Tänk på att ID är känsligt för stora och små bokstäver. Prova gärna igen med ett annat ID."
+  - text: "Problemet som har ID {problem_id} infinner sig tyvärr inte inom ramen för vad jag kan hjälpa till med. Har du angivit ID precis som du tänkt? Stora och små bokstäver spelar roll. Ange gärna ett annat ID du vill ha hjälp med."
+  - text: "Dessvärre känner jag inte till problemet med ID {problem_id}, du kanske har stavat fel? Stora och små bokstäver spelar roll. Om du har ett annat ID kan jag se om jag kan hjälp dig med det!"
+
+  utter_problem_dont_exist_suggest_similar:
+  - text: "Här följer upp till 5 närbesläktade IDn: {problem_ids}."
+  - text: "Jag listar nu upp till 5 liknande IDn som jag känner till: {problem_ids}."
+  - text: "Jag har nu gått igenom min kunskapsbank och listar upp till 5 IDn med liknande stavning: {problem_id}"
+
+  utter_ask_enough_help:
+  - text: "Hjälper det dig nog på vägen?"
+  - text: "Känner du att du har nog med kött på benen nu?"
+  - text: "Kan du gå vidare på egen hand efter detta?"
+
+  utter_good_understand_simple:
+  - text: "Vad bra att du förstår detta problem."
+  - text: "Förträffligt att du nu har förståelse för detta problem."
+  - text: "Så bra det kan gå när man arbetar tillsammans!"
+
+  utter_all_know_simple:
+  - text: "Det är dessvärre allt jag vet om detta problem."
+  - text: "Det är tyvärr allt jag vet om detta problem."
+  - text: "Tyvärr vet jag inget mer om denna uppgift."
+
+  utter_problem_simple:
+  - text: "Detta är ett enkelt problem."
+  - text: "Detta problem har enkel svårighetsgrad."
+  - text: "Svårighetsgraden på detta problem är enkel."
+
+  utter_inform_problem_mapping:
+  - text: "På grund av att det är ett flervalsproblem behöver jag ställa dig några frågor för att bättre förstå vad du behöver hjälp med."
+  - text: "Jag försöker uppfatta vilken delfråga du behöver hjälp med och ställer därmed ett par följdfrågor."
+  - text: "Nu följer några följdfrågor för att bättre förstå exakt vilken del av problemet du efterfrågar hjälp med."
+
+  utter_interpret_absolute:
+  - text: "Du svarade: {answer}"
+  - text: "Ditt svar lyder: {answer}"
+  - text: "Ditt svar var: {answer}"
+
+  utter_interpret_as:
+  - text: "Jag tolkar det som att du svarade: {answer}."
+  - text: "Min uppfattning är att du svarade: {answer}."
+  - text: "Svaret från dig lyder alltså: {answer}."
+
+  utter_dont_understand:
+  - text: "Jag förstod inte svaret, var vänlig försök igen."
+  - text: "Jag kunde tyvärr inte tolka vad du sa, kan du vänligen omformulera dig."
+  - text: "Beklagligen kunde jag inte snappa upp vad du svarade, försök igen är du snäll."
+  - text: "Dessvärre förstår jag inte vad du menar, så vi gör ett nytt försök."
+
+  utter_knowledge_first:
+  - text: "Jag har en del kunskap om detta område, vill du ställa egna frågor?"
+  - text: "Med tanke på att jag kan en del om detta område kan jag erbjuda dig att ställa egna frågor, är det något du vill?"
+  - text: "Vill du utnyttja min befintliga kunskap och ställa egna frågor?"
+
+  utter_knowledge_continue:
+  - text: "Vill du ställa fler egna frågor angående detta område?"
+  - text: "Har du fler frågor att ställa inom detta område när vi väl är igång?"
+  - text: "Är det något mer du skulle vilja fråga mig angående detta område?"
+
+  utter_knowledge_go:
+  - text: "Var god ställ din fråga."
+  - text: "Vänligen framställ din förfrågan."
+  - text: "Varsågod och ställ din fråga."
+
+  utter_knowledge_dont_understand:
+  - text: "Dessvärre kan jag inte svara på den frågan. Eventuellt missförstår jag frågan så du skulle kunna prova att omformulera den, men det är mer sannolikt att jag helt enkelt saknar kunskapen."
+  - text: "Den frågan var svår! Kanske förstår jag inte frågan rätt i vilket fall du skulle kunna försöka framställa frågan i andra ordalag, men den mer naturliga orsaken är nog att det ligger utanför mitt kunskapsområde."
+  - text: "Jisses vilken fråga! Jag vet inte om jag har svårigheter att förstå den rätt, då skulle du kunna ställa den på ett annat sett, eller om jag helt enkelt behöver utvidga mina kunskaper för att besvara den."
+
+  utter_knowledge_interpret:
+  - text: "Jag förstår det som att {interpretation}"
+  - text: "Min tolkning av din fråga är att {interpretation}"
+  - text: "Min uppfattning är att {interpretation}"
+
+  utter_hint_simple:
+  - text: "Här kommer ett tips angående problemet."
+  - text: "Nu följer ett generellt tips om uppgiften."
+  - text: "Här får du ett tips om problemet i fråga."
+
+  utter_reading_simple:
+  - text: "Här kommer läsanvisningar till problemet."
+  - text: "Nedan följer information of var i kursmaterialet du kan läsa mer."
+  - text: "Läsanvisningar följer nedan."
+
+  utter_reading_material:
+  - text: "Du kan läsa mer i boken {book} i kapitel {section}."
+  - text: "Mer information återfinns i kapitel {section} i boken {book}."
+  - text: "Grotta ner dig i detaljer i kapitel {section} i den läsvärda boken {book}."
+
+  utter_advanced_problem:
+  - text: "Detta är ett avancerat problem som kan brytas ner i flera delar."
+  - text: "Med tanke på att det är ett komplext problem kan det delas upp i olika steg."
+  - text: "Problemet är i sig svårt och kräver förståelse för flertalet olika koncept."
+
+  utter_ask_part_or_whole:
+  - text: "Vill du ha hjälp med en specifik del eller problemet i sin helhet?"
+  - text: "Jag kan gå igenom hela problemet steg för steg med dig eller bara en specifik del. Vad föredrar du?"
+  - text: "Är det någon specifik del som besvärar dig eller ska vi ta oss an problemet från början till slut?"
+
+  utter_part_whole_solutions:
+  - text: "Denna del av problemet, som är steg {step_num} av {num_steps}, berör {keyword}, kan lösas på {num_solutions} olika vis."
+  - text: "Du kan ta dig an detta delproblem, som är del {step_num} av {num_steps} i ordningen, och handlar om {keyword}, på {num_solutions} olika sätt."
+  - text: "Steg {step_num} av {num_steps} handlar om {keyword} och kan lösas på {num_solutions} olika sätt."
+
+  utter_part_whole_handle:
+  - text: "Den här delen tar vi oss an genom att {output}."
+  - text: "Vi hanterar den här delen genom att {output}."
+  - text: "Det här steget genomför vi genom att {output}."
+
+  utter_not_sure_part:
+  - text: "Jag förstår att du vill ha hjälp med en del av problemet, men vilken del mer specifikt?"
+  - text: "Jag uppfattar att du vill ha hjälp med en del av problemet, men exakt vilken del funderar du över?"
+  - text: "Som jag förstår det vill du ha hjälp med en del av problemet, men vilken del undrar du över?"
+
+  utter_confirm_problem_part:
+  - text: "Jag tolkar det som att du vill ha hjälp med delen som gäller {part}."
+  - text: "Min uppfattning är att du vill ha assistans med delen som handlar om {part}."
+  - text: "Jag förstår det som att vi tillsammans ska dyka lite djupare i den del som gäller {part}."
+
+  utter_hint_advanced_part:
+  - text: "Den här delen av problemet, som gäller {part}, kan lösas på {num_solutions} olika sätt. Tips följer nedan."
+  - text: "Vi kan ta oss an den här delen som gäller {part} på {num_solutions} olika sätt. Jag listar tips här nedan."
+  - text: "Jag listar nu tips här nedan för den här uppgiften som gäller {part} och kan lösas på {num_solutions} olika vis."
+
+  utter_not_sure_question_but_answer:
+  - text: "Jag är inte helt säker på den där frågeformuleringen, men jag tolkar det som en fråga och försöker besvara den om jag kan."
+  - text: "Det är inte helt tydligt för mig om det där är en fråga, men jag behandlar det som en och ser över om jag har kunskap nog att svara."
+  - text: "Jag vet inte med säkerhet om det där var en fråga, men jag tolkar det som en och ser nu efter om jag har kunskap nog att svara dig."
+
+  utter_cant_interpret_question:
+  - text: "Jag har svårigheter att tolka frågan, var god försök omformulera och ställ din fråga igen."
+  - text: "Ajaj tyvärr kunde jag inte tolka det du skrev som en fråga, var vänlig formulera om frågan och ställ den igen."
+  - text: "Tyvärr kunde jag inte tolka det där som en fråga, vänligen formulera om den och ställ den igen."
+
+  utter_reading_part:
+  - text: "Du kan läsa mer om {part} i boken {book} i kapitlet {section}."
+  - text: "Du hittar mer information om {part} i kapitel {section} i den läsvärda boken {book}."
+  - text: "Om du vill läsa mer om {part} kan du göra det i kapitel {section} i boken {book}."
+
+  utter_reading_hope_helps:
+  - text: "Hoppas innerligt att det hjälper dig på vägen. Det var all information jag hade att delge angående detta problem."
+  - text: "Efter att du noga har studerat läsmaterialet känner du dig förhoppningsvis nog berikad med kunskap för att ta dig an problemet."
+  - text: "Med denna nyfunna kunskap hoppas jag du återigen tar dig an utmaningen att lösa problemet."
+
+  utter_hint_advanced_whole:
+  - text: "Ett generellt tips för det här delproblemet följer nedan."
+  - text: "Nedan följer ett generellt tips för del här delproblemet."
+  - text: "Jag listar nu ett tips för det här delproblemet."
+
+  utter_revert_chitchat:
+  - text: "Låt oss återgå till ämnet."
+  - text: "Det kan vara kul att prata om annat men studieteknik är A och O därav återgår vi nu till ämnet!."
+  - text: "Det skulle vara jättekul att diskutera men det är många andra studenter på kö just nu därför återgår vi till ämnet tack!"
+
+  utter_all_know:
+  - text: "Det är allt jag vet, du får besvära Nihad!"
+  - text: "Har nu uttömt min kunskapsbank, det är dags för dig att vända dig till kursansvariga."
+  - text: "Skulle rekommendera att du spenderar ytterligare lite tid med läshänvisningarna och annars vänder dig till kursens lärare."
+
+  utter_good_understand:
+  - text: "Vad kul att jag kunda vara till hjälp! Välkommen tillbaka om du har andra funderingar."
+  - text: "Så bra det kan gå när man arbetar tillsammans, välkommen åter!"
+  - text: "Det gick ju galant!"
+
+  utter_confirm_whole_problem:
+  - text: "Vi ska nu gå igenom hela problemet steg för steg. Totalt kommer vi gå igenom {num_steps} delmoment."
+  - text: "Du har valt att gå igenom hela problemet del för del. När vi är klara kommer vi att ha gått igenom {num_steps} olika delar."
+  - text: "Vi kommer nu att gå igenom problemets alla {num_steps} delar, en del i taget."
+
+  utter_good_understand_part_whole:
+  - text: "Vad kul att du nu förstår delområdet angående {part}."
+  - text: "Förträffligt att jag kunde assistera dig med förståelsen för {part}."
+  - text: "Vad bra att du nu förstår {part}."
+
+  utter_all_know_part_whole:
+  - text: "Det är dessvärre allt jag vet om delområdet {part}."
+  - text: "Det är förfärligt men jag vet tyvärr inget mer om delområdet {part}."
+  - text: "Jag får dessvärre hänvisa till kursanvariga eller alternativa källor för delområdet som berör {part} då jag dessvärre inte har mer kunskap."
+
+  utter_conclude_whole:
+  - text: "Vi har nu stegat igenom de {num_steps} stegen och således också hela uppgiften tillsammans. Hoppas detta har hjälpt din förståelse för problemet."
+  - text: "Problemet är nu avklarat och jag hoppas de {num_steps} avklarade etapperna har bringat klarhet."
+  - text: "Efter {num_steps} svettiga vändor av bollande fram och tillbaka är vi äntligen klara med problemet."
+
+  utter_session_done:
+  - text: "Sessionen är nu avslutad, om du vill diskutera mer får du återansluta eller trycka på resetknappen ovan till vänster."
+  - text: "Det står andra studenter på kö! Vill du diskutera vidare får du ladda om sidan eller trycka på reset knappen ovan!"
+  - text: "Du är tvungen att start om sessionen om du vill snacka vidare. Detta görs via omladdning av sidan eller ett knapptryck på reset knappen."
+
+  utter_am_bot:
+  - text: "Jag är en bot, men en mycket smart sådan!"
+  - text: "Jag är en intelligent maskin."
+  - text: "Jag är en maskin, men jag är också din studiekamrat!"
+
+  utter_goodbye:
+  - text: "Hej då!"
+  - text: "Tack och hej!"
+  - text: "Tack för denna gång, vi ses!"
+
+actions:
+  - action_session_start
+  # - action_default_fallback
+  - action_confirm_problemid
+  - action_ask_multianswer
+  - action_handle_multianswer
+  - action_stepthrough_advanced
+  - action_part_advanced
+  - action_ask
+  - action_hint
+  - action_reading
+  - action_ask_enough_help
+  - action_good_understand
+  - action_all_know
+  - action_conclude_advanced
+  - action_ask_knowledge
+  - action_intermediate_knowledge
+  - action_handle_knowledge
+  - action_theory_or_compute
+  - action_confirm_theory_subject
+  - action_handle_theory
+  - action_conclude_theory  
+
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true
