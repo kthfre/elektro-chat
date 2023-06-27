@@ -315,7 +315,7 @@ src/App.js
 src/view/*
 ```
 
-Then run `npm build`.
+Then run `npm run build`.
 
 Copy the following files from the respective clients to the respective servers (create folders as neccessary)
 

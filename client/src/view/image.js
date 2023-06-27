@@ -5,8 +5,8 @@ import React, { useState, useEffect } from "react";
  * @returns the image view.
  */
 
-// const URI = window.location.href;
-const URI = "http://localhost:3003/";
+const URI = window.location.href;
+// const URI = "http://localhost:3003/";
 
 const ImageView = ({imageDetails}) =>  {
   let [title, setTitle] = useState("");

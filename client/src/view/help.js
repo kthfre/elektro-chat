@@ -5,8 +5,8 @@ import React, { useState, useEffect } from "react";
  * @returns the help view.
  */
 
-// const URI = window.location.href;
-const URI = "http://localhost:3003/";
+const URI = window.location.href;
+// const URI = "http://localhost:3003/";
 
 const HelpView = ({}) =>  {
   let [enable, setEnable] = useState(false);

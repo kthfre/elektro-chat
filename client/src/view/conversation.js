@@ -6,8 +6,8 @@ import TimerView from "./timer";
  * @returns the conversation view.
  */
 
-// const URI = window.location.href;
-const URI = "http://localhost:3003/";
+const URI = window.location.href;
+// const URI = "http://localhost:3003/";
 
 const ConversationView = ({messageTrigger, reset, setProblemDetails, problemRoadmap, setProblemRoadmap, turnCount, setTurnCount, section, setSection, sessionId}) =>  {
   let [conversationHistory, setConversationHistory] = useState([]);

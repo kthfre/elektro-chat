@@ -5,8 +5,8 @@ import React, { useState } from "react";
  * @returns the list view.
  */
 
-// const URI = window.location.href;
-const URI = "http://localhost:4304/";
+const URI = window.location.href;
+// const URI = "http://localhost:4304/";
 
 const ListView = ({problems, theory, setConf, setConfOptions, setTheory, setProblems, setLoadTree, token}) =>  {
   let [click, setClick] = useState(-1);

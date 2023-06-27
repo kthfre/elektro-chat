@@ -2,68 +2,68 @@ version: "3.1"
 
 stories:
 
-- story: theory path one question
-  steps:
-  - intent: inform_theory_compute
-  - action: action_theory_or_compute
-  - slot_was_set:
-    - problem_stage: "twenty"
-  - intent: inform_module
-  - action: action_confirm_theory_subject
-  - slot_was_set:
-    - problem_stage: "twentyone"
-  - intent: inform_theory_question
-  - action: action_handle_theory
-  - intent: deny
-  - action: action_conclude_theory
-  - slot_was_set:
-    - problem_stage: "eleven"
-  - action: utter_goodbye
+# - story: theory path one question
+#   steps:
+#   - intent: inform_theory_compute
+#   - action: action_theory_or_compute
+#   - slot_was_set:
+#     - problem_stage: "twenty"
+#   - intent: inform_module
+#   - action: action_confirm_theory_subject
+#   - slot_was_set:
+#     - problem_stage: "twentyone"
+#   - intent: inform_theory_question
+#   - action: action_handle_theory
+#   - intent: deny
+#   - action: action_conclude_theory
+#   - slot_was_set:
+#     - problem_stage: "eleven"
+#   - action: utter_goodbye
 
-- story: theory path two questions
-  steps:
-  - intent: inform_theory_compute
-  - action: action_theory_or_compute
-  - slot_was_set:
-    - problem_stage: "twenty"
-  - intent: inform_module
-  - action: action_confirm_theory_subject
-  - slot_was_set:
-    - problem_stage: "twentyone"
-  - intent: inform_theory_question
-  - action: action_handle_theory
-  - intent: affirm
-  - action: action_confirm_theory_subject
-  - intent: inform_theory_question
-  - action: action_handle_theory
-  - intent: deny
-  - action: action_conclude_theory
-  - slot_was_set:
-    - problem_stage: "eleven"
-  - action: utter_goodbye
+# - story: theory path two questions
+#   steps:
+#   - intent: inform_theory_compute
+#   - action: action_theory_or_compute
+#   - slot_was_set:
+#     - problem_stage: "twenty"
+#   - intent: inform_module
+#   - action: action_confirm_theory_subject
+#   - slot_was_set:
+#     - problem_stage: "twentyone"
+#   - intent: inform_theory_question
+#   - action: action_handle_theory
+#   - intent: affirm
+#   - action: action_confirm_theory_subject
+#   - intent: inform_theory_question
+#   - action: action_handle_theory
+#   - intent: deny
+#   - action: action_conclude_theory
+#   - slot_was_set:
+#     - problem_stage: "eleven"
+#   - action: utter_goodbye
 
-- story: theory path three questions
-  steps:
-  - intent: inform_theory_compute
-  - action: action_theory_or_compute
-  - slot_was_set:
-    - problem_stage: "twenty"
-  - intent: inform_module
-  - action: action_confirm_theory_subject
-  - slot_was_set:
-    - problem_stage: "twentyone"
-  - intent: inform_theory_question
-  - action: action_handle_theory
-  - intent: affirm
-  - action: action_confirm_theory_subject
-  - intent: inform_theory_question
-  - action: action_handle_theory
-  - intent: affirm
-  - action: action_confirm_theory_subject
-  - intent: inform_theory_question
-  - action: action_handle_theory
-  - intent: deny
-  - action: action_conclude_theory
-  - slot_was_set:
-    - problem_stage: "eleven"
-  - action: utter_goodbye
+# - story: theory path three questions
+#   steps:
+#   - intent: inform_theory_compute
+#   - action: action_theory_or_compute
+#   - slot_was_set:
+#     - problem_stage: "twenty"
+#   - intent: inform_module
+#   - action: action_confirm_theory_subject
+#   - slot_was_set:
+#     - problem_stage: "twentyone"
+#   - intent: inform_theory_question
+#   - action: action_handle_theory
+#   - intent: affirm
+#   - action: action_confirm_theory_subject
+#   - intent: inform_theory_question
+#   - action: action_handle_theory
+#   - intent: affirm
+#   - action: action_confirm_theory_subject
+#   - intent: inform_theory_question
+#   - action: action_handle_theory
+#   - intent: deny
+#   - action: action_conclude_theory
+#   - slot_was_set:
+#     - problem_stage: "eleven"
+#   - action: utter_goodbye

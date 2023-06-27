@@ -276,9 +276,9 @@ def load_word_embeddings(enabled_models):
   sentence_bert_model = None
 
   if enabled_models["fasttext"][0]:
-    #path_fasttext = datapath(models_folder_path + "cc.sv.50.bin")
-    #fasttext_model = load_facebook_vectors(path_fasttext)
-    fasttext_model = compress_fasttext.models.CompressedFastTextKeyedVectors.load(models_folder_path + "cc.sv.300.pruned.bin")
+    path_fasttext = datapath(models_folder_path + "cc.sv.300.bin")
+    fasttext_model = load_facebook_vectors(path_fasttext)
+    #fasttext_model = compress_fasttext.models.CompressedFastTextKeyedVectors.load(models_folder_path + "cc.sv.300.pruned.bin")
 
   if enabled_models["word2vec"][0]:
     path_word2vec = datapath(models_folder_path + "word2vec.sv.100.conll17.bin")

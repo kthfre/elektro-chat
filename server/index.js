@@ -48,7 +48,7 @@ app.post("/", (req, res) => {
 
   transmitToRasa(sender, message).then(res_ => {
     res_.json().then(data => {
-      let arr = [...data];
+      let arr = message === "/session_start" ? data.slice(0, 2) : [...data];
       const {array, index} = removeFromArray(arr, "custom");
 
       let tasks = [];

@@ -14,8 +14,8 @@ import HelpView from "./help";
  * @returns the main view.
  */
 
-// const URI = window.location.href;
-const URI = "http://localhost:3003/";
+const URI = window.location.href;
+// const URI = "http://localhost:3003/";
 
 const MainView = () =>  {
   let [response, setResponse] = useState([]);
@@ -36,7 +36,7 @@ const MainView = () =>  {
     const id = generateId();
 
     id.then(res => {
-      sendMessage("", res);
+      sendMessage(res);
       setSessionId(res);
     });
   }, []);
@@ -77,11 +77,13 @@ const MainView = () =>  {
     }
   }
 
-  const sendMessage = (message, sender) => {
+  const sendMessage = (sender, message = null) => {
+    let data = {sender, message: message === null ? "/session_start" : message};
+
     let obj = {
       method: "POST",
       mode: "cors",
-      body: JSON.stringify({sender, message}),
+      body: JSON.stringify(data),
       headers: {
         "Content-Type": "application/json",
       }
@@ -100,7 +102,7 @@ const MainView = () =>  {
     const id = generateId();
     
     id.then(res => {
-      sendMessage("", res);
+      sendMessage(res);
       setSessionId(res);
 
       setProblemDetails(null);

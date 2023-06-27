@@ -3,8 +3,8 @@
  * @returns the header view.
  */
 
-// const URI = window.location.href;
-const URI = "http://localhost:4304/";
+const URI = window.location.href;
+// const URI = "http://localhost:4304/";
 
 const HeaderView = ({user="", setAuth}) =>  {
   const logout = el => {

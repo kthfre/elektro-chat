@@ -510,6 +510,15 @@ rules:
   - action: action_listen
   wait_for_user_input: false
 
+- rule: theory assume module only one available for theory
+  condition:
+  - slot_was_set:
+    - problem_stage: twentyone
+  steps:
+  - action: action_confirm_theory_subject
+  - action: action_listen
+  wait_for_user_input: false
+
 - rule: theory handle front end spinner control
   condition:
   - slot_was_set:

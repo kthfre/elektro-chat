@@ -5,8 +5,8 @@ import React from "react";
  * @returns the header view.
  */
 
-// const URI = window.location.href;
-const URI = "http://localhost:3003/";
+const URI = window.location.href;
+// const URI = "http://localhost:3003/";
 
 const HeaderView = ({props}) => {
 

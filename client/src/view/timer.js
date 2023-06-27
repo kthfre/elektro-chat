@@ -5,8 +5,8 @@ import React, { useState, useEffect, useRef } from "react";
  * @returns the timer view.
  */
 
-// const URI = window.location.href;
-const URI = "http://localhost:3003/";
+const URI = window.location.href;
+// const URI = "http://localhost:3003/";
 
 const TimerView = ({eta, delay}) =>  {
   let [currentCount, setCurrentCount] = useState(0);

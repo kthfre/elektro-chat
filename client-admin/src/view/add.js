@@ -8,8 +8,8 @@ import FeedbackView from "./feedback";
  * @returns the add view.
  */
 
-// const URI = window.location.href;
- const URI = "http://localhost:4304/";
+const URI = window.location.href;
+// const URI = "http://localhost:4304/";
 
 const AddView = ({modules, conf, mapFulfilled, setTheory, setProblems, token}) =>  {
   let [items, setItems] = useState([]);

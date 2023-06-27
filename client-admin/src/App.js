@@ -8,8 +8,8 @@ import AddView from './view/add';
 import MapView from './view/map';
 import LoginView from './view/login';
 
-// const URI = window.location.href;
-const URI = "http://localhost:4304/";
+const URI = window.location.href;
+// const URI = "http://localhost:4304/";
 
 function App() {
   let [theory, setTheory] = useState([]);

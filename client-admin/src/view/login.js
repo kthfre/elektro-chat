@@ -6,8 +6,8 @@ import jwt_decode from "jwt-decode";
  * @returns the login view.
  */
 
-// const URI = window.location.href;
-const URI = "http://localhost:4304/";
+const URI = window.location.href;
+// const URI = "http://localhost:4304/";
 
 const LoginView = ({setAuth}) =>  {
   let [feedback, setFeedback] = useState("");
